@@ -14,13 +14,19 @@
 
     <nav class="navbar">
         <div class="nav-inner">
-            <a href="{{ url_for('landing') }}" class="nav-brand">
+            <a href="{{ url_for('dashboard') if current_user else url_for('landing') }}" class="nav-brand">
                 <span class="brand-icon">◈</span>
                 <span class="brand-name">Spendly</span>
             </a>
             <div class="nav-links">
+                {% if current_user %}
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <span class="nav-user">Hi, {{ current_user.name }}</span>
+                <a href="{{ url_for('logout') }}" class="nav-cta">Log out</a>
+                {% else %}
                 <a href="{{ url_for('login') }}">Sign in</a>
                 <a href="{{ url_for('register') }}" class="nav-cta">Get started</a>
+                {% endif %}
             </div>
         </div>
     </nav>

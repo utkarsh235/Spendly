@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Add expense — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="auth-section">
+    <div class="auth-container">
+
+        <div class="auth-header">
+            <h1 class="auth-title">Add an expense</h1>
+            <p class="auth-subtitle">Log a new transaction for your account</p>
+        </div>
+
+        <div class="auth-card">
+            {% if error %}
+            <div class="auth-error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('add_expense') }}">
+                <div class="form-group">
+                    <label for="amount">Amount (₹)</label>
+                    <input type="number" id="amount" name="amount"
+                           value="{{ amount or '' }}"
+                           step="0.01" min="0"
+                           class="form-input" placeholder="0.00"
+                           required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category"
+                           value="{{ category or '' }}"
+                           list="category-options"
+                           class="form-input" placeholder="Groceries"
+                           required>
+                    <datalist id="category-options">
+                        {% for c in categories %}
+                        <option value="{{ c }}"></option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description <span>(optional)</span></label>
+                    <input type="text" id="description" name="description"
+                           value="{{ description or '' }}"
+                           class="form-input" placeholder="Weekly shop">
+                </div>
+                <div class="form-group">
+                    <label for="spent_on">Date</label>
+                    <input type="date" id="spent_on" name="spent_on"
+                           value="{{ spent_on or '' }}"
+                           class="form-input"
+                           required>
+                </div>
+                <button type="submit" class="btn-submit">Add expense</button>
+            </form>
+        </div>
+
+        <p class="auth-switch">
+            <a href="{{ url_for('dashboard') }}">Back to dashboard</a>
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}

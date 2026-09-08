@@ -528,3 +528,199 @@ a { color: inherit; text-decoration: none; }
     .nav-links a:not(.nav-cta) { display: none; }
     .hero { padding: 3rem 1rem 2rem; }
 }
+
+/* ------------------------------------------------------------------ */
+/* Dashboard — expenses ledger                                         */
+/* ------------------------------------------------------------------ */
+
+.ledger {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+}
+
+.ledger-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.ledger-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ink);
+}
+
+.ledger-meta {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+}
+
+.ledger-scroll {
+    overflow-x: auto;
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 520px;
+}
+
+.ledger-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    background: var(--paper-warm);
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Sortable column headers — click to sort the current page (see main.js) */
+.ledger-table thead th {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 2.1rem;
+    transition: color 0.15s;
+}
+
+.ledger-table thead th:hover { color: var(--ink); }
+
+.ledger-table thead th:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+.ledger-table thead th::after {
+    content: "\2195";              /* up-down arrow: sortable, unsorted */
+    position: absolute;
+    right: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9em;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.ledger-table thead th.is-sorted-asc::after {
+    content: "\2191";             /* up arrow */
+    opacity: 1;
+    color: var(--accent);
+}
+
+.ledger-table thead th.is-sorted-desc::after {
+    content: "\2193";            /* down arrow */
+    opacity: 1;
+    color: var(--accent);
+}
+
+.ledger-table td {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--ink-soft);
+}
+
+.ledger-table tbody tr:last-child td { border-bottom: none; }
+.ledger-table tbody tr { transition: background 0.15s; }
+.ledger-table tbody tr:hover { background: var(--paper); }
+
+.ledger-table .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.ledger-table td.date {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-muted);
+    white-space: nowrap;
+}
+
+.ledger-table td.desc { color: var(--ink-muted); }
+
+.cat-tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+}
+
+.ledger-table tfoot td {
+    padding: 0.9rem 1.25rem;
+    border-top: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+}
+
+.ledger-empty {
+    background: var(--paper-card);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+}
+
+.ledger-empty a { color: var(--accent); font-weight: 500; }
+.ledger-empty a:hover { text-decoration: underline; }
+
+/* Pager — numbered page chips below the ledger */
+.pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+}
+
+.pager-page {
+    min-width: 2.25rem;
+    padding: 0.4rem 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-muted);
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: color 0.15s, border-color 0.15s;
+}
+
+a.pager-page:hover {
+    color: var(--ink);
+    border-color: var(--ink-faint);
+}
+
+a.pager-page:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.pager-page.is-current {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--paper);
+}
+
+@media (max-width: 600px) {
+    .ledger { padding: 0 1rem 3rem; }
+    .pager { justify-content: center; }
+}
