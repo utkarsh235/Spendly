@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Your dashboard</div>
+        <h1 class="hero-title">
+            Welcome back,<br>
+            <em>{{ current_user.name }}</em>
+        </h1>
+        <p class="hero-subtitle">
+            {% if count %}
+            {{ count }} expense{{ '' if count == 1 else 's' }} logged,
+            totalling ₹{{ '%.2f' | format(total) }}.
+            {% else %}
+            You haven't logged any expenses yet.
+            {% endif %}
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('add_expense') }}" class="btn-primary">Add expense</a>
+            <a href="{{ url_for('logout') }}" class="btn-ghost">Log out</a>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="mock-card">
+            <div class="mock-card-header">
+                <span class="mock-label">Your expenses</span>
+                <span class="mock-total">₹{{ '%.2f' | format(total) }}</span>
+            </div>
+            <div class="mock-bars">
+                {% for e in expenses %}
+                <div class="mock-bar-row">
+                    <span class="mock-cat">{{ e.category }}</span>
+                    <span class="mock-amt">₹{{ '%.2f' | format(e.amount) }}</span>
+                    <span class="mock-label">{{ e.spent_on }}</span>
+                </div>
+                {% else %}
+                <p class="mock-cat">Nothing here yet — add your first expense.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ledger">
+    <div class="ledger-head">
+        <h2 class="ledger-title">All expenses</h2>
+        {% if count %}
+        <span class="ledger-meta">
+            {{ count }} entr{{ 'y' if count == 1 else 'ies' }} &middot; newest first
+        </span>
+        {% endif %}
+    </div>
+
+    {% if expenses %}
+    <div class="ledger-scroll">
+        <table class="ledger-table">
+            <thead>
+                <tr>
+                    <th scope="col" data-type="date">Date</th>
+                    <th scope="col" data-type="text">Category</th>
+                    <th scope="col" data-type="text">Description</th>
+                    <th scope="col" class="num" data-type="number">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in expenses %}
+                <tr>
+                    <td class="date">{{ e.spent_on }}</td>
+                    <td><span class="cat-tag">{{ e.category }}</span></td>
+                    <td class="desc">{{ e.description or '—' }}</td>
+                    <td class="num" data-sort="{{ e.amount }}">₹{{ '%.2f' | format(e.amount) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Total</td>
+                    <td class="num">₹{{ '%.2f' | format(total) }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    {% if total_pages > 1 %}
+    <nav class="pager" aria-label="Expense pages">
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <span class="pager-page is-current" aria-current="page">{{ '%02d' % p }}</span>
+            {% else %}
+            <a class="pager-page" href="{{ url_for('dashboard', page=p) }}">{{ '%02d' % p }}</a>
+            {% endif %}
+        {% endfor %}
+    </nav>
+    {% endif %}
+    {% else %}
+    <p class="ledger-empty">
+        No expenses logged yet. <a href="{{ url_for('add_expense') }}">Add your first one</a>.
+    </p>
+    {% endif %}
+</section>
+
+{% endblock %}
